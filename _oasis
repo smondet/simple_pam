@@ -6,13 +6,23 @@ Authors:     Sebastien Mondet
 License:     LGPL-2.1 with OCaml linking exception
 Plugins:     META (0.3)
 BuildTools:  ocamlbuild
+PostConfCommand: ./bin/check_pam
+
+Flag pam_avail
+  Description: Whether to fake it or not
+  Default: true
 
 Library simple_pam
   Path: src/lib
   Modules: Simple_pam
-  CSources: simple_pam_stubs.c
+  CSources: config.h, simple_pam_stubs.c
   Install: true
-  CCLib: -lpam -lresolv
+  CCOpt: -Isrc/lib -I.
+  if flag(pam_avail)
+     CCLib: -lpam -lresolv
+  else
+     CCLib: -lresolv
+
 
 
                    

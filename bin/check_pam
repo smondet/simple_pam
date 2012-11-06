@@ -1,0 +1,16 @@
+#!/bin/sh
+
+out=src/lib/config.h
+
+cat > .test.h <<'EOM'
+#include <security/pam_appl.h>
+EOM
+if gcc -E .test.h
+ then
+  echo '#define PAM_IS_IN_THE_PLACE 1' >> $out
+ else 
+  echo '#ifdef PAM_IS_IN_THE_PLACE' >> $out
+  echo '# undef PAM_IS_IN_THE_PLACE' >> $out
+  echo '#endif' >> $out
+  echo 'pam_avail="false"' >> setup.data
+ fi

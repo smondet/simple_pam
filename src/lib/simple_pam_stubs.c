@@ -29,6 +29,9 @@
 #include <caml/threads.h>
 #include <stdio.h>
 
+#include <config.h>
+
+#ifdef PAM_IS_IN_THEN_PLACE
 
 #include <security/pam_appl.h>
 
@@ -140,3 +143,16 @@ simple_pam_authorize_stub(value service, value username, value password){
     caml_failwith(error ? error : "Unknown error");
   CAMLreturn(ret);
 }
+
+#else
+
+CAMLprim value 
+simple_pam_authorize_stub(value service, value username, value password){
+  CAMLparam3(service, username, password);
+  CAMLlocal1(ret);
+  ret = Val_unit;
+  caml_failwith("Pam is not available on this machine");
+  CAMLreturn(ret);
+}
+
+#endif
