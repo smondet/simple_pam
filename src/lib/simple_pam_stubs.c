@@ -31,7 +31,7 @@
 
 #include <config.h>
 
-#ifdef PAM_IS_IN_THEN_PLACE
+#ifdef PAM_IS_IN_THE_PLACE
 
 #include <security/pam_appl.h>
 
